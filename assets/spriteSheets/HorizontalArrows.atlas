@@ -1,0 +1,33 @@
+HorizontalArrows.png
+size: 1024, 1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+LeftArrow
+  rotate: false
+  xy: 0, 0
+  size: 166, 512
+  orig: 166, 512
+  offset: 0, 0
+  index: -1
+LeftArrowActive
+  rotate: false
+  xy: 166, 0
+  size: 166, 512
+  orig: 166, 512
+  offset: 0, 0
+  index: -1
+RightArrow
+  rotate: false
+  xy: 332, 0
+  size: 166, 512
+  orig: 166, 512
+  offset: 0, 0
+  index: -1
+RightArrowActive
+  rotate: false
+  xy: 498, 0
+  size: 166, 512
+  orig: 166, 512
+  offset: 0, 0
+  index: -1

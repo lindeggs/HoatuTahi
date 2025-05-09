@@ -1,0 +1,124 @@
+Buttons.png
+size: 2048, 1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BtnNewGame
+  rotate: false
+  xy: 0, 190
+  size: 1050, 129
+  orig: 1050, 129
+  offset: 0, 0
+  index: -1
+BtnNewGameAct
+  rotate: false
+  xy: 0, 319
+  size: 1050, 129
+  orig: 1050, 129
+  offset: 0, 0
+  index: -1
+BtnResumeGame
+  rotate: false
+  xy: 0, 448
+  size: 1345, 129
+  orig: 1345, 129
+  offset: 0, 0
+  index: -1
+BtnResumeGameAct
+  rotate: false
+  xy: 0, 577
+  size: 1345, 129
+  orig: 1345, 129
+  offset: 0, 0
+  index: -1
+BtnResumeGameDis
+  rotate: false
+  xy: 0, 706
+  size: 1345, 129
+  orig: 1345, 129
+  offset: 0, 0
+  index: -1
+Exit
+  rotate: false
+  xy: 1366, 0
+  size: 157, 190
+  orig: 157, 190
+  offset: 0, 0
+  index: -1
+ExitActive
+  rotate: false
+  xy: 1523, 0
+  size: 157, 190
+  orig: 157, 190
+  offset: 0, 0
+  index: -1
+MusicOff
+  rotate: false
+  xy: 222, 0
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+MusicOffActive
+  rotate: false
+  xy: 360, 0
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+MusicOn
+  rotate: false
+  xy: 0, 0
+  size: 111, 140
+  orig: 111, 140
+  offset: 0, 0
+  index: -1
+MusicOnActive
+  rotate: false
+  xy: 111, 0
+  size: 111, 140
+  orig: 111, 140
+  offset: 0, 0
+  index: -1
+NoiseOff
+  rotate: false
+  xy: 778, 0
+  size: 147, 140
+  orig: 147, 140
+  offset: 0, 0
+  index: -1
+NoiseOffActive
+  rotate: false
+  xy: 925, 0
+  size: 147, 140
+  orig: 147, 140
+  offset: 0, 0
+  index: -1
+NoiseOn
+  rotate: false
+  xy: 1072, 0
+  size: 147, 140
+  orig: 147, 140
+  offset: 0, 0
+  index: -1
+NoiseOnActive
+  rotate: false
+  xy: 1219, 0
+  size: 147, 140
+  orig: 147, 140
+  offset: 0, 0
+  index: -1
+Settings
+  rotate: false
+  xy: 498, 0
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+SettingsActive
+  rotate: false
+  xy: 638, 0
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1

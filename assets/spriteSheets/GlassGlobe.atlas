@@ -1,0 +1,54 @@
+GlassGlobe.png
+size: 512, 1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+GlassGlobe_Lvl1
+  rotate: false
+  xy: 185, 253
+  size: 185, 253
+  orig: 185, 253
+  offset: 0, 0
+  index: -1
+GlassGlobe_Lvl2
+  rotate: false
+  xy: 0, 253
+  size: 185, 253
+  orig: 185, 253
+  offset: 0, 0
+  index: -1
+GlassGlobe_off
+  rotate: false
+  xy: 0, 506
+  size: 185, 253
+  orig: 185, 253
+  offset: 0, 0
+  index: -1
+GlassGlobe_on
+  rotate: false
+  xy: 262, 0
+  size: 185, 253
+  orig: 185, 253
+  offset: 0, 0
+  index: -1
+GlassGlobe_on2
+  rotate: false
+  xy: 77, 0
+  size: 185, 253
+  orig: 185, 253
+  offset: 0, 0
+  index: -1
+GlassGlobe_plus
+  rotate: false
+  xy: 0, 0
+  size: 77, 77
+  orig: 77, 77
+  offset: 0, 0
+  index: -1
+GlassGlobe_selected
+  rotate: false
+  xy: 185, 506
+  size: 284, 350
+  orig: 284, 350
+  offset: 0, 0
+  index: -1

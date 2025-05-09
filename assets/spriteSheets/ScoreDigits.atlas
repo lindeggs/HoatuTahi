@@ -1,0 +1,82 @@
+ScoreDigits.png
+size: 512, 512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Digit
+  rotate: false
+  xy: 0, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 0
+Digit
+  rotate: false
+  xy: 72, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 1
+Digit
+  rotate: false
+  xy: 144, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 2
+Digit
+  rotate: false
+  xy: 216, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 3
+Digit
+  rotate: false
+  xy: 288, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 4
+Digit
+  rotate: false
+  xy: 360, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 5
+Digit
+  rotate: false
+  xy: 432, 0
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 6
+Digit
+  rotate: false
+  xy: 0, 128
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 7
+Digit
+  rotate: false
+  xy: 72, 128
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 8
+Digit
+  rotate: false
+  xy: 144, 128
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: 9
+Digit_off
+  rotate: false
+  xy: 216, 128
+  size: 72, 128
+  orig: 72, 128
+  offset: 0, 0
+  index: -1
