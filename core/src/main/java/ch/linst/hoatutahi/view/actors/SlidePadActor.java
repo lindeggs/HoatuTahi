@@ -1,6 +1,5 @@
 package ch.linst.hoatutahi.view.actors;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -63,7 +62,6 @@ public class SlidePadActor extends Group implements EventListener {
 
     private Vector2 initialPos = new Vector2(); // The initial pos of the touch down event
     private Vector2 farestPos = new Vector2();
-    private Vector2 tempPos = new Vector2(); // Used for calculations between local- and stage coordinates
 
     private float sliderDeflection = 0f;
 
@@ -93,28 +91,22 @@ public class SlidePadActor extends Group implements EventListener {
 
     @Override
     public boolean handle(Event event) {
-
-        if(!(event instanceof InputEvent)){
-            return false;
-        }
-
+        if(!(event instanceof InputEvent)) return false;
         InputEvent iEv = (InputEvent)event;
 
-        // Return if the callback comes from a second of third touch object
-        if((iEv.getPointer() != 0)){
-            return false;
-        }
+        if((iEv.getPointer() != 0)) return false; // Return if the callback comes from a second of third touch object
 
-        tempPos.set(iEv.getStageX(), iEv.getStageY());
+        Vector2 tempPos = new Vector2(iEv.getStageX(), iEv.getStageY());
         parentToLocalCoordinates(tempPos);
-
-
-
 
         // Handle event
         if(spaState == SpaState.READY){
             if(spaSlideDirection == SpaSlideDirection.UNKNOWN){
-                if(iEv.getType() == InputEvent.Type.touchDown)    onTouchDown(tempPos.x, tempPos.y);
+                if(iEv.getType() == InputEvent.Type.touchDown){
+                    onTouchDown(tempPos.x, tempPos.y);
+                    // Below line is required to capture touchDragged events after touchDown
+                    iEv.getStage().addTouchFocus(this, iEv.getListenerActor(), iEv.getTarget(), iEv.getPointer(), iEv.getButton());
+                }
                 if(iEv.getType() == InputEvent.Type.touchDragged) onTouchDraggedAtReady(tempPos.x, tempPos.y);
             }
             else if(spaSlideDirection == SpaSlideDirection.SLIDE_RIGHT){
