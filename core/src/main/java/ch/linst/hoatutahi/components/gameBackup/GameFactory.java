@@ -1,11 +1,8 @@
 package ch.linst.hoatutahi.components.gameBackup;
 
-import com.badlogic.gdx.Gdx;
-
-import java.io.IOException;
 import java.util.HashMap;
 
-import ch.linst.hoatutahi.components.billing.service.ProductId;
+import ch.linst.hoatutahi.components.ProductId;
 import ch.linst.hoatutahi.components.playgroundModel.IntRef;
 import ch.linst.hoatutahi.components.playgroundModel.Playground;
 

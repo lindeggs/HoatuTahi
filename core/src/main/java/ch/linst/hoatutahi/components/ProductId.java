@@ -1,4 +1,4 @@
-package ch.linst.hoatutahi.components.billing.service;
+package ch.linst.hoatutahi.components;
 
 public enum ProductId {
     PLAYGROUND_ITEMSET_0_BALLS, // This product is not represented in the app store as it is the basic item set

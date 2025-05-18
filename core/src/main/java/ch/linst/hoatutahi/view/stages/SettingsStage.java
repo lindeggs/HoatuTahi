@@ -14,10 +14,6 @@ import java.beans.PropertyChangeListener;
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.ItemSetContainer;
 import ch.linst.hoatutahi.components.MyAssetManager;
-import ch.linst.hoatutahi.components.billing.AppStoreItem;
-import ch.linst.hoatutahi.components.billing.BillingManager;
-import ch.linst.hoatutahi.components.billing.service.ProductId;
-import ch.linst.hoatutahi.components.billing.service.PurchaseDetails;
 import ch.linst.hoatutahi.view.actors.ItemSetPresentationActor;
 import ch.linst.hoatutahi.view.actors.radioButtonSelectors.ItemSetSelectorActor;
 
@@ -26,10 +22,7 @@ public class SettingsStage extends BaseStage {
     public SettingsStage(Viewport viewportArg, HoatuTahi hoatuTahiArg) {
         super(viewportArg, hoatuTahiArg);
 
-        checkUnlockItemSet();
-
         ItemSetSelectorActor itemSetSelectorActor = getNewItemSetSelectorActor();
-
 
         addActor(getNewExitBtnActor());
         addActor(getNewItemSetPresentationActor(0, itemSetSelectorActor));
@@ -83,30 +76,17 @@ public class SettingsStage extends BaseStage {
 
     private ItemSetSelectorActor getNewItemSetSelectorActor(){
         int selectedItemSet = hoatuTahi.getGameViewFactory().getItemSetSelected();
-        BillingManager billingManager = hoatuTahi.getBillingManager();
 
-        ItemSetSelectorActor act = new ItemSetSelectorActor(selectedItemSet, assetManager, billingManager);
+        ItemSetSelectorActor act = new ItemSetSelectorActor(selectedItemSet, assetManager);
         act.setPosition(0, hoatuTahi.getScreenHeight() - act.getHeight() - 20f);
 
-        // Register handler which is called if the itemSet selection as changed (the selected itemSet may still be locked)
+        // Register handler which is called if the itemSet selection as changed
         act.addSelectionChangedListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
                 if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
                     int selectedItemSet = (Integer) propertyChangeEvent.getNewValue();
-
                     setVisibleItemSetActor(selectedItemSet);
-                }
-            }
-        });
-
-        // Register handler which is called if the itemSet activation has changed
-        act.addActivationChangedListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
-                    int selectedItemSet = (Integer) propertyChangeEvent.getNewValue();
-
                     hoatuTahi.getGameViewFactory().setItemSetSelected(selectedItemSet);
                 }
             }
@@ -115,14 +95,4 @@ public class SettingsStage extends BaseStage {
         return act;
     }
 
-    /**
-     * Checks if an item set can be unlocked because the highestItemUnveiled constraint of the previous Item set has been met
-     */
-    private void checkUnlockItemSet(){
-        int lovaBallsHighestVisibleItem = hoatuTahi.getGameFactory().getHighestItemUnveiled(0);
-        if(lovaBallsHighestVisibleItem >= 15){
-            AppStoreItem storeItem = hoatuTahi.getBillingManager().getAppStoreItem(ProductId.PLAYGROUND_ITEMSET_1_NUMBERS_2048);
-            storeItem.setPurchaseState(PurchaseDetails.PurchaseState.GRANTED_FOR_FREE);
-        }
-    }
 }

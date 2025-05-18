@@ -4,9 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.PlatformService;
-import ch.linst.hoatutahi.lwjgl3.components.DesktopFakeAdService;
 import ch.linst.hoatutahi.lwjgl3.components.DesktopPlatformService;
-import ch.linst.hoatutahi.lwjgl3.components.billing.DesktopBillingService;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -21,11 +19,9 @@ public class Lwjgl3Launcher {
     private static Lwjgl3Application createApplication() {
 
         PlatformService platformService = new DesktopPlatformService();
-        DesktopFakeAdService adService = new DesktopFakeAdService();
-        DesktopBillingService billingService = new DesktopBillingService();
 
 
-        return new Lwjgl3Application(new HoatuTahi(platformService, adService, billingService), getDefaultConfiguration());
+        return new Lwjgl3Application(new HoatuTahi(platformService), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
