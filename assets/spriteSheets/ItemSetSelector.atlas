@@ -1,75 +1,26 @@
 ItemSetSelector.png
-size: 2048, 1024
+size: 1024, 1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-BatchMask
-  rotate: false
-  xy: 0, 0
-  size: 143, 152
-  orig: 143, 152
-  offset: 0, 0
-  index: -1
-BillingBackground
-  rotate: false
-  xy: 143, 0
-  size: 388, 205
-  orig: 388, 205
-  offset: 0, 0
-  index: -1
-Checkmark
-  rotate: false
-  xy: 531, 0
-  size: 143, 152
-  orig: 143, 152
-  offset: 0, 0
-  index: -1
 ItemSet1
   rotate: false
-  xy: 674, 0
-  size: 385, 385
-  orig: 385, 385
+  xy: 0, 0
+  size: 384, 384
+  orig: 384, 384
   offset: 0, 0
   index: -1
 ItemSet2
   rotate: false
-  xy: 1059, 0
-  size: 385, 385
-  orig: 385, 385
-  offset: 0, 0
-  index: -1
-ItemSet2Locked
-  rotate: false
-  xy: 1444, 0
-  size: 385, 385
-  orig: 385, 385
-  offset: 0, 0
-  index: -1
-ItemSet2UnlockHint
-  rotate: false
-  xy: 0, 385
-  size: 305, 112
-  orig: 305, 112
+  xy: 384, 0
+  size: 384, 384
+  orig: 384, 384
   offset: 0, 0
   index: -1
 ItemSetMask
   rotate: false
-  xy: 305, 385
-  size: 385, 385
-  orig: 385, 385
-  offset: 0, 0
-  index: -1
-PadLock
-  rotate: false
-  xy: 690, 385
-  size: 143, 152
-  orig: 143, 152
-  offset: 0, 0
-  index: -1
-Trolley
-  rotate: false
-  xy: 833, 385
-  size: 112, 99
-  orig: 112, 99
+  xy: 0, 384
+  size: 384, 384
+  orig: 384, 384
   offset: 0, 0
   index: -1
