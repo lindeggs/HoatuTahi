@@ -107,7 +107,10 @@ public class SlidePadActor extends Group implements EventListener {
                     // Below line is required to capture touchDragged events after touchDown
                     iEv.getStage().addTouchFocus(this, iEv.getListenerActor(), iEv.getTarget(), iEv.getPointer(), iEv.getButton());
                 }
-                if(iEv.getType() == InputEvent.Type.touchDragged) onTouchDraggedAtReady(tempPos.x, tempPos.y);
+                else if(iEv.getType() == InputEvent.Type.touchDragged)
+                {
+                    onTouchDraggedAtReady(tempPos.x, tempPos.y);
+                }
             }
             else if(spaSlideDirection == SpaSlideDirection.SLIDE_RIGHT){
                 if(iEv.getType() == InputEvent.Type.touchDragged) onTouchDraggedAtSlideRight(tempPos.x);

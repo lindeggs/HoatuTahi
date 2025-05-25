@@ -17,10 +17,8 @@ public abstract class BaseSelectableActor extends MyClickableGroup implements Se
 
     @Override
     protected void onTouchUpEvent() {
-        Gdx.app.debug("HoatuTahi-core", "BaseSelectableActor clicked");
         if(selectedListener != null) selectedListener.handleSelected(this);
     }
-
 
     @Override
     public void addSelectedListener(SelectedListener listener) {
