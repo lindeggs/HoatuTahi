@@ -14,9 +14,10 @@ android {
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
-      java.setSrcDirs(['src/main/java', 'src/main/kotlin'])
-      aidl.setSrcDirs(['src/main/java', 'src/main/kotlin'])
-      renderscript.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      // Following directories have been commented, because they are according to convention
+      // java.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      // aidl.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      // renderscript.setSrcDirs(['src/main/java', 'src/main/kotlin'])
       res.setSrcDirs(['res'])
       assets.setSrcDirs(['../assets'])
       jniLibs.setSrcDirs(['libs'])
@@ -49,9 +50,12 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  buildFeatures {
+    buildConfig true
+  }
 
   kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
-  
+
 }
 
 repositories {

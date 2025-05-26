@@ -29,54 +29,29 @@ public class AudioProvider implements PropertyChangeListener{
     private static final int SCORE_UPDATE_SOUND_LOCK_TIME = 150;
     private long scoreUpdateSoundLockTimeThreshold = 0;
 
-    private AudioProviderSettings audioPSettings;
+    private final AudioProviderSettings audioPSettings;
 
-    private Music homeStageMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/2019-00029-1655_lucid-dreams.mp3"));
-    private Music[] gameStageMusic = {
+    private final Music homeStageMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/2019-00029-1655_lucid-dreams.mp3"));
+    private final Music[] gameStageMusic = {
             Gdx.audio.newMusic(Gdx.files.internal("audio/2016-00099-1051_carefully.mp3")),
             Gdx.audio.newMusic(Gdx.files.internal("audio/2018-00116-1522_long-run.mp3")),
             Gdx.audio.newMusic(Gdx.files.internal("audio/2015-00239-265_beautiful.mp3")),
             Gdx.audio.newMusic(Gdx.files.internal("audio/2019-00029-1655_lucid-dreams.mp3"))
     };
-    private Music gameOverSpoken = Gdx.audio.newMusic(Gdx.files.internal("audio/GameOver.mp3"));
-    private Music gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/2018-00173-1579_have-fun.mp3"));
+    private final Music gameOverSpoken = Gdx.audio.newMusic(Gdx.files.internal("audio/GameOver.mp3"));
+    private final Music gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/2018-00173-1579_have-fun.mp3"));
 
-    private Sound scoreUpdateSound = Gdx.audio.newSound(Gdx.files.internal("audio/Loop_2T_100ms.wav"));
+    private final Sound scoreUpdateSound = Gdx.audio.newSound(Gdx.files.internal("audio/Loop_2T_100ms.wav"));
 
     private int gameStageMusicIndex = 0;
     private Music currentMusic = homeStageMusic;
 
     private int minDelayBetweenSongs = 20;
     private int maxDelayBetweenSongs = 60;
-    private Random randomDelayGen = new Random(System.nanoTime());
+    private final Random randomDelayGen = new Random(System.nanoTime());
 
-    private ScheduledExecutorService gameStageMusicExecutorService = Executors.newSingleThreadScheduledExecutor();
-    private ScheduledFuture gameStageMusicScheduledFuture = null;
-
-    private Music.OnCompletionListener gameStageAudioCompletionListener = new Music.OnCompletionListener() {
-        @Override
-        public void onCompletion(Music music) {
-            gameStageMusicIndex = (gameStageMusicIndex + 1) % gameStageMusic.length;
-
-            int delayTime = randomDelayGen.nextInt(maxDelayBetweenSongs - minDelayBetweenSongs) + minDelayBetweenSongs;
-            minDelayBetweenSongs *= DELAY_INCREASE_FACTOR;
-            maxDelayBetweenSongs *= DELAY_INCREASE_FACTOR;
-
-            gameStageMusicScheduledFuture = gameStageMusicExecutorService.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    doPlayMusic(gameStageMusic[gameStageMusicIndex]);
-                }
-            }, delayTime, TimeUnit.SECONDS);
-        }
-    };
-
-    private Music.OnCompletionListener gameOverSpokenCompletionListener = new Music.OnCompletionListener() {
-        @Override
-        public void onCompletion(Music music) {
-            doPlayMusic(gameOverMusic);
-        }
-    };
+    private final ScheduledExecutorService gameStageMusicExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> gameStageMusicScheduledFuture = null;
 
 
     /**
@@ -86,11 +61,35 @@ public class AudioProvider implements PropertyChangeListener{
         audioPSettings = audioProviderSettingsArg;
         homeStageMusic.setLooping(true);
 
+        final Music.OnCompletionListener gameStageAudioCompletionListener = new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                gameStageMusicIndex = (gameStageMusicIndex + 1) % gameStageMusic.length;
+
+                int delayTime = randomDelayGen.nextInt(maxDelayBetweenSongs - minDelayBetweenSongs) + minDelayBetweenSongs;
+
+                minDelayBetweenSongs = (int)((float)minDelayBetweenSongs * DELAY_INCREASE_FACTOR);
+                maxDelayBetweenSongs = (int)((float)maxDelayBetweenSongs * DELAY_INCREASE_FACTOR);
+
+                gameStageMusicScheduledFuture = gameStageMusicExecutorService.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        doPlayMusic(gameStageMusic[gameStageMusicIndex]);
+                    }
+                }, delayTime, TimeUnit.SECONDS);
+            }
+        };
+
         for (Music music:gameStageMusic){
             music.setOnCompletionListener(gameStageAudioCompletionListener);
         }
 
-        gameOverSpoken.setOnCompletionListener(gameOverSpokenCompletionListener);
+        gameOverSpoken.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                doPlayMusic(gameOverMusic);
+            }
+        });
     }
 
     public void playMusic(Song songArg){
