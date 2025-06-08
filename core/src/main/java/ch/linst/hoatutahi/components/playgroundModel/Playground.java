@@ -1,10 +1,10 @@
 package ch.linst.hoatutahi.components.playgroundModel;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -41,8 +41,8 @@ public class Playground {
     public static final String STATE_CHANGED_EV_ID = "StateChanged";
     public static final String SCORE_CHANGED_EV_ID = "ScoreChanged";
 
-    protected PlaygroundItem currentItems[][];
-    protected PlaygroundItem nextItems[][];
+    protected PlaygroundItem[][] currentItems;
+    protected PlaygroundItem[][] nextItems;
     protected PlaygroundItem nextNewItem;
     protected int nextNewItemPosX = 0;
     protected int nextNewItemPosY = 0;
@@ -144,21 +144,6 @@ public class Playground {
         }
     }
 
-    public final Iterable<PlaygroundItem> oldGetCurrentItems(){
-
-        List<PlaygroundItem> retVal = new ArrayList<PlaygroundItem>();
-
-        for(int y = 0; y < currentItems.length; y++){
-            for(int x = 0; x < currentItems[y].length; x++){
-                if(currentItems[y][x].value > 0){
-                    retVal.add(currentItems[y][x]);
-                }
-            }
-        }
-
-        return retVal;
-    }
-
     public PlaygroundItem getNextNewItem() {
         return nextNewItem;
     }
@@ -191,7 +176,7 @@ public class Playground {
         }
     }
 
-    private void eventAtReadyToMove(Event ev){
+    private void eventAtReadyToMove(@NotNull Event ev){
         boolean playfieldHasChanged = false;
 
         switch (ev){
@@ -319,10 +304,6 @@ public class Playground {
         return sizeY;
     }
 
-    public State getState() {
-        return state;
-    }
-
     public int getCurrentScore() {
         return currentScore;
     }
@@ -343,7 +324,7 @@ public class Playground {
         if(scoreArg != currentScore){
             int oldScore = currentScore;
             currentScore = scoreArg;
-            highScore.value = (currentScore > highScore.value)? currentScore : highScore.value;
+            highScore.value = Math.max(currentScore, highScore.value);
             pcs.firePropertyChange(SCORE_CHANGED_EV_ID, oldScore, currentScore);
         }
 
@@ -360,19 +341,17 @@ public class Playground {
      * @return true if game is over
      */
     private boolean checkGameOver(){
-
         boolean isGameOver = true;
-        Direction directions[] = {Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN};
+        Direction[] directions = {Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN};
 
         // Check if its possible to move in any direction
         for(Direction dir: directions){
-            if(moveItems(dir, false) == true){
+            if(moveItems(dir, false)){
                 isGameOver = false;
                 revert();
                 break;
             }
         }
-
         return isGameOver;
     }
 
@@ -380,11 +359,10 @@ public class Playground {
      * Reverts a started movement of items
      */
     private void revert(){
-
-        for(int y = 0; y < currentItems.length; y++){
-            for(int x = 0; x < currentItems[y].length; x++){
-                currentItems[y][x].moveX = 0;
-                currentItems[y][x].moveY = 0;
+        for (PlaygroundItem[] currentItemRow : currentItems) {
+            for (PlaygroundItem item : currentItemRow) {
+                item.moveX = 0;
+                item.moveY = 0;
             }
         }
         initPlaygroundItems(nextItems);
@@ -436,7 +414,7 @@ public class Playground {
         return false;
     }
 
-    private void copyPlaygroundItems(PlaygroundItem srcItems[][], PlaygroundItem destItems[][]){
+    private void copyPlaygroundItems(@NotNull PlaygroundItem[][] srcItems, @NotNull PlaygroundItem[][] destItems){
         for(int y = 0; y < srcItems.length; y++){
             for(int x = 0; x < srcItems[y].length; x++){
                 destItems[y][x].setAllValues(srcItems[y][x]);
@@ -444,11 +422,11 @@ public class Playground {
         }
     }
 
-    private int getHighestPlaygroundItem(PlaygroundItem itemsArg[][]){
+    private int getHighestPlaygroundItem(@NotNull PlaygroundItem[][] itemsArg){
         int highestPgItem = 0;
-        for(int y = 0; y < itemsArg.length; y++){
-            for(int x = 0; x < itemsArg[y].length; x++){
-                highestPgItem = Math.max(itemsArg[y][x].value, highestPgItem);
+        for (PlaygroundItem[] ItemsRow : itemsArg) {
+            for (PlaygroundItem item : ItemsRow) {
+                highestPgItem = Math.max(item.value, highestPgItem);
             }
         }
         return highestPgItem;
@@ -457,14 +435,8 @@ public class Playground {
     /**
      * Sets a new random next item using member nextNewItem (sets its position and value from 0 to 1 or 2)
      * This operation searches a random empty field on the nextItems playfield.
-     * @return true if a new item could be set
      */
-    protected boolean setRandomNextItem() {
-
-        if(countEmptyfields(nextItems) == 0){
-            return false;
-        }
-
+    protected void setRandomNextItem() {
         int xPos;
         int yPos;
         do{
@@ -475,45 +447,22 @@ public class Playground {
         nextNewItemPosX = xPos;
         nextNewItemPosY = yPos;
         nextNewItem.value = (rndGen.nextInt(100) > 90)? 2 : 1;
-        //nextNewItem.value = (rndGen.nextInt(100) > 90)? 14 : 14; //todo remove
-        return true;
     }
 
-    /**
-     * Counts the empty fileds (the fileds with value == 0) in a items field
-     * @param itemsArg 2D array of items
-     * @return empty items count
-     */
-    private int countEmptyfields(PlaygroundItem itemsArg[][]){
-
-        int retVal = 0;
-
-        for(int y = 0; y < itemsArg.length; y++){
-            for(int x = 0; x < itemsArg[y].length; x++){
-                if(itemsArg[y][x].value == 0){
-                    retVal++;
-                }
-            }
-        }
-        return retVal;
-    }
-
-    private void initPlaygroundItemsMoveAttribute(PlaygroundItem[][] itemsArg) {
-
-        for(int y = 0; y < itemsArg.length; y++){
-            for(int x = 0; x < itemsArg[y].length; x++){
-                itemsArg[y][x].moveX = 0;
-                itemsArg[y][x].moveY = 0;
+    private void initPlaygroundItemsMoveAttribute(@NotNull PlaygroundItem[][] itemsArg) {
+        for (PlaygroundItem[] itemsRow : itemsArg) {
+            for (PlaygroundItem item : itemsRow) {
+                item.moveX = 0;
+                item.moveY = 0;
             }
         }
     }
-
 
     /**
      * Initializes a field of PlaygroundItems (creates new objects if required)
      * @param itemsArg items to delete or instantiate
      */
-    protected void initPlaygroundItems(PlaygroundItem[][] itemsArg) {
+    protected void initPlaygroundItems(@NotNull PlaygroundItem[][] itemsArg) {
 
         for(int y = 0; y < itemsArg.length; y++){
             for(int x = 0; x < itemsArg[y].length; x++){

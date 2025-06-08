@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import ch.linst.hoatutahi.components.MyAssetManager;
 import ch.linst.hoatutahi.components.audio.AudioProvider;
 import ch.linst.hoatutahi.components.audio.AudioProviderSettings;
-import ch.linst.hoatutahi.components.playgroundModel.IntRef;
 
 /**
  * Manages the persistent Backup of the game state.
@@ -31,16 +30,16 @@ public class BackupHandler {
     public static final int AUDIO_PROVIDER_SETTINGS_MAYOR_VERSION = 0;
     public static final int AUDIO_PROVIDER_SETTINGS_MINOR_VERSION = 3;
 
-    private BackupFile backupFile = new BackupFile();
+    private final BackupFile backupFile = new BackupFile();
 
     // No need to backup the asset manager, but this class is instantiated here because some backups need it
-    private MyAssetManager assetManager = new MyAssetManager();
+    private final MyAssetManager assetManager = new MyAssetManager();
 
     private AudioProvider audioProvider = null;
 
     private String backupFileMD5 = "";
 
-    private FileHandle fileHandle = Gdx.files.local(GAMESTATE_BACKUP_FILENAME);
+    private final FileHandle fileHandle = Gdx.files.local(GAMESTATE_BACKUP_FILENAME);
 
 
 
@@ -172,15 +171,15 @@ public class BackupHandler {
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
-                hexString.append(String.format("%02x", (0xFF & messageDigest[i])));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : messageDigest) hexString.append(String.format("%02x", (0xFF & b)));
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
         return "";

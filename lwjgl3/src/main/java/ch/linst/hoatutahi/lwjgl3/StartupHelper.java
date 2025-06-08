@@ -174,6 +174,7 @@ public class StartupHelper {
             }
         } catch (Exception e) {
             System.err.println("There was a problem restarting the JVM");
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
 

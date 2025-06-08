@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MyButton extends Button {
 
-
     public MyButton(TextureRegion up, TextureRegion down, TextureRegion checked, TextureRegion disabled) {
         super();
 
@@ -38,15 +37,5 @@ public class MyButton extends Button {
     public void setScale(float scaleXY) {
         super.setScale(scaleXY);
         setSize(getPrefWidth() * scaleXY, getPrefHeight() * scaleXY);
-    }
-
-    public void setWidthKeepAspect(float widthArg){
-        float scaleXY = widthArg / getPrefWidth();
-        setScale(scaleXY);
-    }
-
-    public void setHeightKeepAspect(float heightArg){
-        float scaleXY = heightArg / getPrefHeight();
-        setScale(scaleXY);
     }
 }

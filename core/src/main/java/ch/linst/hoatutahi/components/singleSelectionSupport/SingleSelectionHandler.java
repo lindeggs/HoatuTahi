@@ -9,7 +9,7 @@ public class SingleSelectionHandler implements SelectedListener {
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-    private List<Selectable> selectables = new ArrayList<Selectable>();
+    private final List<Selectable> selectables = new ArrayList<>();
     private int currentSelection = -1;
 
 
@@ -45,10 +45,6 @@ public class SingleSelectionHandler implements SelectedListener {
                 sel.deSelect();
             }
         }
-    }
-
-    public int getCurrentSelection() {
-        return currentSelection;
     }
 
     public void setCurrentSelection(int newSelection) {

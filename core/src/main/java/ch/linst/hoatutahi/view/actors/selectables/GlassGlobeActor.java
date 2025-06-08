@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Objects;
+
 import ch.linst.hoatutahi.components.ItemSetContainer;
 import ch.linst.hoatutahi.components.MyAssetManager;
 import ch.linst.hoatutahi.view.actors.ParticleEffectActor;
@@ -16,10 +18,10 @@ import ch.linst.hoatutahi.view.actors.ParticleEffectActor;
 public class GlassGlobeActor extends BaseSelectableActor {
 
     private static class GlobeImgInfo{
-        public String name;
-        public int posX;
-        public int posY;
-        public float alpha;
+        public final String name;
+        public final int posX;
+        public final int posY;
+        public final float alpha;
 
         public GlobeImgInfo(String name, int posX, int posY, float alpha) {
             this.name = name;
@@ -46,10 +48,7 @@ public class GlassGlobeActor extends BaseSelectableActor {
             new GlobeImgInfo(GG_P, 185/2 - 77/2, 253 - 185/2 - 77/2, 0.7f)
     };
 
-    private static final String[] IMAGES = {GG_OFF, GG_ON};
-
-    private MyAssetManager assetManager;
-
+    private final MyAssetManager assetManager;
 
     public GlassGlobeActor(ItemSetContainer itemSetContainerArg, MyAssetManager assetManagerArg) {
         super();
@@ -58,9 +57,11 @@ public class GlassGlobeActor extends BaseSelectableActor {
         addListener(this);
 
         // Add all static images of the glass globe
+        //noinspection GDXJavaUnsafeIterator
         for(Image img: createAllGlassGlobeStaticImages()) addActor(img);
 
         // Add all (dynamic) prediction images of the glass globe
+        //noinspection GDXJavaUnsafeIterator
         for(Image img: createAllGlassGlobePredictionImages(itemSetContainerArg)) addActor(img);
 
         // Add the ParticleEffectActor containing the animated stars
@@ -97,7 +98,7 @@ public class GlassGlobeActor extends BaseSelectableActor {
 
     private void hideAllActors(){
         for(Actor act: getChildren()){
-            if(act.getName() != GG_PARTICLE){
+            if(!Objects.equals(act.getName(), GG_PARTICLE)){
                 act.setVisible(false);
             }
             else{
@@ -108,7 +109,7 @@ public class GlassGlobeActor extends BaseSelectableActor {
 
     private Array<Image> createAllGlassGlobeStaticImages(){
 
-        Array<Image> aImg = new Array<Image>();
+        Array<Image> aImg = new Array<>();
 
         for(GlobeImgInfo imgInfo: GLOBE_IMAGES_INFO){
             Image img = new Image(new TextureRegionDrawable(assetManager.getAtlas(MyAssetManager.GLASS_GLOBE_ATLAS).findRegion(imgInfo.name)));
@@ -143,7 +144,7 @@ public class GlassGlobeActor extends BaseSelectableActor {
 
     private Array<Image> createAllGlassGlobePredictionImages(ItemSetContainer itemSetContainerArg){
 
-        Array<Image> aImg = new Array<Image>();
+        Array<Image> aImg = new Array<>();
         for(int i = 1; i <= 3; i++){
             Image img = new Image(new TextureRegionDrawable(itemSetContainerArg.itemTexAtlas.findRegion("Item", i)));
             img.setTouchable(Touchable.disabled);

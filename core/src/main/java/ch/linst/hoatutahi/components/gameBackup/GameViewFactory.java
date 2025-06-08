@@ -1,9 +1,5 @@
 package ch.linst.hoatutahi.components.gameBackup;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import ch.linst.hoatutahi.components.ItemSetContainer;
@@ -40,18 +36,6 @@ public class GameViewFactory extends BaseFactory{
         assetManager = assetManagerArg;
     }
 
-    public boolean IsPlaygroundViewStored(int sizeX, int sizeY, int level){
-        String hashKey = getPgHashKey(sizeX, sizeY, level);
-        PlaygroundViewSettings playgroundViewSettings = playgroundViewSettingsHashMap.get(hashKey);
-        return (playgroundViewSettings != null)? true : false;
-    }
-
-    public PlaygroundActor getNewPlaygroundActor(Playground playground, int gameLevel){
-        String hashKey = getPgHashKey(playground.getSizeX(), playground.getSizeY(), gameLevel);
-        playgroundViewSettingsHashMap.remove(hashKey);
-        return getPlaygroundActor(playground, gameLevel);
-    }
-
     public void removePlaygroundViewSettings(Playground playground, int gameLevel){
         String hashKey = getPgHashKey(playground.getSizeX(), playground.getSizeY(), gameLevel);
         playgroundViewSettingsHashMap.remove(hashKey);
@@ -60,9 +44,7 @@ public class GameViewFactory extends BaseFactory{
     public PlaygroundActor getPlaygroundActor(Playground playground, int gameLevel){
         PlaygroundViewSettings playgroundViewSettings = getOrCreatePlaygroundViewSettings(playground, gameLevel);
         ItemSetContainer itemSetContainer = assetManager.getItemSetContainer(playgroundViewSettings.itemSet);
-
-        PlaygroundActor actor = new PlaygroundActor(playground, itemSetContainer, gameLevel, assetManager);
-        return actor;
+        return new PlaygroundActor(playground, itemSetContainer, gameLevel, assetManager);
     }
 
     public GlassGlobeActor getGlassGlobeActor(Playground playground, int gameLevel){

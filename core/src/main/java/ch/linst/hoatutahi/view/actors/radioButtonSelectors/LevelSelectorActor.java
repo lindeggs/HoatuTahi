@@ -1,10 +1,5 @@
 package ch.linst.hoatutahi.view.actors.radioButtonSelectors;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
-import java.util.ArrayList;
-
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.ItemSetContainer;
 import ch.linst.hoatutahi.components.MyAssetManager;

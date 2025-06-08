@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MyToggleButton extends MyButton {
 
-    private Button.ButtonStyle btnStyle1;
-    private Button.ButtonStyle btnStyle2;
+    private final Button.ButtonStyle btnStyle1;
+    private final Button.ButtonStyle btnStyle2;
 
     public MyToggleButton(TextureRegion up1, TextureRegion down1, TextureRegion up2, TextureRegion down2, boolean checked) {
         btnStyle1 = new Button.ButtonStyle();

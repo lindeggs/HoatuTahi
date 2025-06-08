@@ -13,7 +13,7 @@ public class MyAssetManager extends AssetManager {
     public static final String ARROW_ATLAS                = "spriteSheets/HorizontalArrows.atlas";
     public static final String ITEM_SET_SELECTOR_ATLAS    = "spriteSheets/ItemSetSelector.atlas";
 
-    public static final String ITEM_SET_ATLAS[]           = {"spriteSheets/ItemSet1.atlas", "spriteSheets/ItemSet2.atlas"};
+    public static final String[] ITEM_SET_ATLAS           = {"spriteSheets/ItemSet1.atlas", "spriteSheets/ItemSet2.atlas"};
     public static final int ITEM_SET_COUNT = ITEM_SET_ATLAS.length;
 
     // Texture definitions
@@ -26,9 +26,9 @@ public class MyAssetManager extends AssetManager {
     public static final String RAY_TEX                    = "Ray.png";
 
     // Item set scaling definitions                                      balls set, 2048 set
-    private static final float PLAYGROUND_VIEW_BASE_SCALE[]           = {1.15f    , 0.93f};
-    private static final float ITEMSET_PRESENTATION_VIEW_BASE_SCALE[] = {1.8f     , 1.5f};
-    private static final float GLASGLOBE_ITEMS_BASE_SCALE[]           = {1.4f     , 0.84f};
+    private static final float[] PLAYGROUND_VIEW_BASE_SCALE           = {1.15f    , 0.93f};
+    private static final float[] ITEMSET_PRESENTATION_VIEW_BASE_SCALE = {1.8f     , 1.5f};
+    private static final float[] GLASGLOBE_ITEMS_BASE_SCALE           = {1.4f     , 0.84f};
 
     public MyAssetManager() {
         super();
@@ -48,7 +48,7 @@ public class MyAssetManager extends AssetManager {
     }
 
     public Texture getTex(String fileArg){
-        Texture retVal = null;
+        Texture retVal;
         if(isLoaded(fileArg, Texture.class)){
             retVal = get(fileArg, Texture.class);
         }
@@ -59,7 +59,7 @@ public class MyAssetManager extends AssetManager {
     }
 
     public TextureAtlas getAtlas(String fileArg){
-        TextureAtlas retVal = null;
+        TextureAtlas retVal;
         if(isLoaded(fileArg, TextureAtlas.class)){
             retVal = get(fileArg, TextureAtlas.class);
         }

@@ -2,6 +2,9 @@ package ch.linst.hoatutahi.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+
+import org.jetbrains.annotations.NotNull;
+
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.PlatformService;
 import ch.linst.hoatutahi.lwjgl3.components.DesktopPlatformService;
@@ -16,14 +19,12 @@ public class Lwjgl3Launcher {
         createApplication();
     }
 
-    private static Lwjgl3Application createApplication() {
-
+    private static void createApplication() {
         PlatformService platformService = new DesktopPlatformService();
-
-
-        return new Lwjgl3Application(new HoatuTahi(platformService), getDefaultConfiguration());
+        new Lwjgl3Application(new HoatuTahi(platformService), getDefaultConfiguration());
     }
 
+    @NotNull
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("HoatuTahi");

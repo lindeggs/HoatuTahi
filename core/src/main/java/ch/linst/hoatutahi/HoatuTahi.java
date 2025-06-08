@@ -88,16 +88,8 @@ public class HoatuTahi extends ApplicationAdapter {
         return backupHandler.getGameViewFactory();
     }
 
-    public int getScreenWidth() {
-        return VIRT_SCREEN_WIDTH;
-    }
-
-    public int getScreenHeight() {
-        return VIRT_SCREEN_HEIGHT;
-    }
-
     public Vector2 getScreenSize(){
-        return new Vector2(getScreenWidth(), getScreenHeight());
+        return new Vector2(VIRT_SCREEN_WIDTH, VIRT_SCREEN_HEIGHT);
     }
 
     public MyAssetManager getAssetManager() {
@@ -107,10 +99,11 @@ public class HoatuTahi extends ApplicationAdapter {
     @Override
     public void create () {
         if(platformService.getBuildConfigBuildType().equals("debug")){
+            //noinspection GDXJavaLogLevel
             Gdx.app.setLogLevel(Application.LOG_DEBUG);
         }
         else{
-            Gdx.app.setLogLevel(Application.LOG_INFO);
+            Gdx.app.setLogLevel(Application.LOG_ERROR);
         }
 
         camera = new OrthographicCamera();
@@ -138,10 +131,8 @@ public class HoatuTahi extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-
         Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}

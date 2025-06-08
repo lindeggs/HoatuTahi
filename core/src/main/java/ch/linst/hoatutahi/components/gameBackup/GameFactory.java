@@ -12,14 +12,14 @@ import ch.linst.hoatutahi.components.playgroundModel.Playground;
 public class GameFactory extends BaseFactory {
 
     // Annotation: JSON deserialization of HashMaps does only work if the key is of type String
-    private HashMap<String, Playground> playgroundHashMap = new HashMap<>();
-    private HashMap<String, IntRef> playgroundHighScoreHashMap = new HashMap<>();
+    private final HashMap<String, Playground> playgroundHashMap = new HashMap<>();
+    private final HashMap<String, IntRef> playgroundHighScoreHashMap = new HashMap<>();
 
     private int playgroundSizeSelectorIndex = 2;
     private int gameLevel = 0; // Level 0..2 (level 0 is the easyest)
 
     // highestItemsUnveiled contains for each itemset (product) the highest item that has been unveiled
-    private IntRef highestItemsUnveiled[] = new IntRef[ProductId.values().length];
+    private final IntRef[] highestItemsUnveiled = new IntRef[ProductId.values().length];
 
     private transient GameViewFactory gameViewFactory;
 
@@ -48,7 +48,7 @@ public class GameFactory extends BaseFactory {
     public boolean isPlaygroundStored(int sizeXArg, int sizeYArg, int levelArg){
         String hashKey = getPgHashKey(sizeXArg, sizeYArg, levelArg);
         Playground playground = playgroundHashMap.get(hashKey);
-        return (playground != null)? true : false;
+        return playground != null;
     }
 
 
@@ -106,12 +106,7 @@ public class GameFactory extends BaseFactory {
 
     private IntRef getHighScoreRef(int sizeX, int sizeY){
         String hashKey = getPgHashKey(sizeX, sizeY, gameLevel);
-        IntRef highscoreBackup = playgroundHighScoreHashMap.get(hashKey);
-        if(highscoreBackup == null){
-            highscoreBackup = new IntRef(0);
-            playgroundHighScoreHashMap.put(hashKey, highscoreBackup);
-        }
-        return highscoreBackup;
+        return playgroundHighScoreHashMap.computeIfAbsent(hashKey, k -> new IntRef(0));
     }
 
     public int getPlaygroundSizeSelectorIndex() {

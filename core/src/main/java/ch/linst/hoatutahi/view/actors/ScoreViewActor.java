@@ -22,34 +22,27 @@ public class ScoreViewActor extends Group {
 
     private final PropertyChangeSupport pcs;
 
-    private MyAssetManager assetManager;
+    private final MyAssetManager assetManager;
 
     private float scoreUpdateDeltaTime = 0f;
     private int score = 0;
     private int targetScore = 0;
 
-    private ArrayList<TextureRegionDrawable> digitsTexDrawables;
-
-    private ScoreDigitActor digits[] = new ScoreDigitActor[NUM_DIGITS];
+    private final ScoreDigitActor[] digits = new ScoreDigitActor[NUM_DIGITS];
 
     public ScoreViewActor(MyAssetManager assetManagerArg) {
         super();
         assetManager = assetManagerArg;
-
         setTouchable(Touchable.disabled);
         setWidth(SCORE_VIEW_WIDTH);
         setHeight(SCORE_VIEW_HEIGHT);
-
         pcs = new PropertyChangeSupport(this);
 
-        digitsTexDrawables = getNewDigitsTexDrawables();
-
         for(int i = 0; i < NUM_DIGITS; i++){
-            digits[i] = new ScoreDigitActor(digitsTexDrawables, SCORE_DIGIT_WIDTH, SCORE_VIEW_HEIGHT);
+            digits[i] = new ScoreDigitActor(getNewDigitsTexDrawables(), SCORE_DIGIT_WIDTH, SCORE_VIEW_HEIGHT);
             digits[i].setPosition(getWidth() - (i + 1) * (SCORE_DIGIT_WIDTH + MARGIN_BETWEEN_DIGITS) + MARGIN_BETWEEN_DIGITS, 0f);
             addActor(digits[i]);
         }
-
         setScore(0);
     }
 
@@ -142,7 +135,7 @@ public class ScoreViewActor extends Group {
 
     private ArrayList<TextureRegionDrawable> getNewDigitsTexDrawables(){
 
-        ArrayList<TextureRegionDrawable> texDrawables = new ArrayList<TextureRegionDrawable>();
+        ArrayList<TextureRegionDrawable> texDrawables = new ArrayList<>();
 
         // Add digits 0..9 to the ArrayList
         for(int i = 0; i <= 9; i++){

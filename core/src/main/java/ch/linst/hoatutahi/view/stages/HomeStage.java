@@ -24,8 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.ItemSetContainer;
@@ -42,13 +41,11 @@ import ch.linst.hoatutahi.view.actors.animatedSelectors.SelectorActor;
 
 public class HomeStage extends BaseStage {
 
-    PgSizeSelectorActor pgSizeSelectorActor;
-    Button resumeGameBtnActor;
-    ScoreViewActor highScoreActor;
+    private final PgSizeSelectorActor pgSizeSelectorActor;
+    private final Button resumeGameBtnActor;
+    private final ScoreViewActor highScoreActor;
 
-
-
-    public HomeStage(Viewport viewportArg, HoatuTahi hoatuTahi){
+    public HomeStage(@NotNull Viewport viewportArg, @NotNull HoatuTahi hoatuTahi){
         super(viewportArg, hoatuTahi);
 
         hoatuTahi.getAudioProvider().playMusic(AudioProvider.Song.HomeStageMusic);
@@ -94,7 +91,7 @@ public class HomeStage extends BaseStage {
     @Override
     public void dispose() {
         super.dispose();
-
+        //noinspection GDXJavaUnsafeIterator
         for (Actor actor : getActors()) {
             if(actor instanceof DisposableActor){
                 ((DisposableActor)actor).dispose();
@@ -102,18 +99,16 @@ public class HomeStage extends BaseStage {
         }
     }
 
+    @NotNull
     private PgSizeSelectorActor getNewPgSizeSelectorActor(){
         PgSizeSelectorActor act = new PgSizeSelectorActor(hoatuTahi);
         act.setSelectedIndex(hoatuTahi.getGameFactory().getPlaygroundSizeSelectorIndex());
         act.setPosition((HoatuTahi.VIRT_SCREEN_WIDTH - act.getWidth()) / 2, 800f);
 
-        act.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if(propertyChangeEvent.getPropertyName().equals(SelectorActor.SELECTION_CHANGED_EV_ID)){
-                    updateResumeGameBtnEnabledState();
-                    updateHighScoreViewActor();
-                }
+        act.addPropertyChangeListener(propertyChangeEvent -> {
+            if(propertyChangeEvent.getPropertyName().equals(SelectorActor.SELECTION_CHANGED_EV_ID)){
+                updateResumeGameBtnEnabledState();
+                updateHighScoreViewActor();
             }
         });
 
@@ -131,7 +126,7 @@ public class HomeStage extends BaseStage {
         resumeGameBtnActor.setTouchable((pgStored)? Touchable.enabled : Touchable.disabled);
     }
 
-
+    @NotNull
     private Actor getNewGameTitleActor(){
 
         float rotateThreshold = 2f;
@@ -139,8 +134,8 @@ public class HomeStage extends BaseStage {
 
         Image img = new Image(assetManager.getTex(MyAssetManager.HOATU_TAHI_TEX));
         img.setTouchable(Touchable.disabled);
-        img.setX((hoatuTahi.getScreenWidth() - img.getPrefWidth()) / 2);
-        img.setY(hoatuTahi.getScreenHeight() - 400);
+        img.setX((HoatuTahi.VIRT_SCREEN_WIDTH - img.getPrefWidth()) / 2);
+        img.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - 400);
         img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);
 
         img.setRotation(-rotateThreshold);
@@ -151,6 +146,7 @@ public class HomeStage extends BaseStage {
         return img;
     }
 
+    @NotNull
     private RepeatAction getGameTitleMoveRepAction() {
         float amountY = 10;
 
@@ -167,6 +163,7 @@ public class HomeStage extends BaseStage {
         return repA2;
     }
 
+    @NotNull
     private RepeatAction getGameTitleRotationRepAction(float rotateThreshold, float rotateDuration) {
         RotateToAction rotA1 = new RotateToAction();
         rotA1.setRotation(rotateThreshold);
@@ -181,16 +178,17 @@ public class HomeStage extends BaseStage {
         return repA;
     }
 
+    @NotNull
     private Actor getNewRayActor(){
         float rotateDuration = 50f;
-        float imgSizeXY = 1.8f * hoatuTahi.getScreenHeight();
+        float imgSizeXY = 1.8f * HoatuTahi.VIRT_SCREEN_HEIGHT;
 
         Image img = new Image(assetManager.getTex(MyAssetManager.RAY_TEX));
         img.setTouchable(Touchable.disabled);
         img.setSize(imgSizeXY, imgSizeXY);
 
-        img.setX(hoatuTahi.getScreenWidth() - (img.getWidth() / 2) - 95);
-        img.setY(hoatuTahi.getScreenHeight() - (img.getHeight()/ 2) - 120);
+        img.setX(HoatuTahi.VIRT_SCREEN_WIDTH - (img.getWidth() / 2) - 95);
+        img.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - (img.getHeight()/ 2) - 120);
         img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);
         img.setColor(1, 1, 1, 0.2f);
 
@@ -201,6 +199,7 @@ public class HomeStage extends BaseStage {
         return img;
     }
 
+    @NotNull
     private RepeatAction getRayAlphaRepAction() {
         AlphaAction alA1 = new AlphaAction();
         alA1.setAlpha(1);
@@ -217,6 +216,7 @@ public class HomeStage extends BaseStage {
         return repA2;
     }
 
+    @NotNull
     private RepeatAction getRayRotationRepAction(float rotateDuration) {
         RotateByAction rotA = new RotateByAction();
         rotA.setAmount(360f);
@@ -227,11 +227,12 @@ public class HomeStage extends BaseStage {
         return repA1;
     }
 
+    @NotNull
     private Actor getNewSettingsBtnActor(){
         TextureRegion tex1 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("Settings");
         TextureRegion tex2 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("SettingsActive");
         MyButton btn = new MyButton(tex1, tex2, null, null);
-        btn.setPosition(40f, hoatuTahi.getScreenHeight() - btn.getHeight() - 20f);
+        btn.setPosition(40f, HoatuTahi.VIRT_SCREEN_HEIGHT - btn.getHeight() - 20f);
 
         btn.addListener(new ClickListener()
         {
@@ -243,6 +244,7 @@ public class HomeStage extends BaseStage {
         return btn;
     }
 
+    @NotNull
     private Actor getMusicOnOffBtnActor() {
         TextureRegion trMusicOn = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("MusicOn");
         TextureRegion trMusicOnActive = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("MusicOnActive");
@@ -250,7 +252,7 @@ public class HomeStage extends BaseStage {
         TextureRegion trMusicOffActive = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("MusicOffActive");
         boolean checked = hoatuTahi.getAudioProvider().isMusicEnabled();
         MyToggleButton btn = new MyToggleButton(trMusicOff, trMusicOffActive, trMusicOn, trMusicOnActive, checked);
-        btn.setPosition(240f, hoatuTahi.getScreenHeight() - btn.getHeight() - 20f);
+        btn.setPosition(240f, HoatuTahi.VIRT_SCREEN_HEIGHT - btn.getHeight() - 20f);
 
         btn.addListener(new ClickListener()
         {
@@ -263,6 +265,7 @@ public class HomeStage extends BaseStage {
         return btn;
     }
 
+    @NotNull
     private Actor getSoundOnOffBtnActor() {
         TextureRegion trNoiseOn = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("NoiseOn");
         TextureRegion trNoiseOnActive = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("NoiseOnActive");
@@ -270,7 +273,7 @@ public class HomeStage extends BaseStage {
         TextureRegion trNoiseOffActive = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("NoiseOffActive");
         boolean checked = hoatuTahi.getAudioProvider().isSoundEnabled();
         MyToggleButton btn = new MyToggleButton(trNoiseOff, trNoiseOffActive, trNoiseOn, trNoiseOnActive, checked);
-        btn.setPosition(440f, hoatuTahi.getScreenHeight() - btn.getHeight() - 20f);
+        btn.setPosition(440f, HoatuTahi.VIRT_SCREEN_HEIGHT - btn.getHeight() - 20f);
 
         btn.addListener(new ClickListener()
         {
@@ -287,6 +290,7 @@ public class HomeStage extends BaseStage {
     /**
      * Creates the new game button actor and returns it
      */
+    @NotNull
     private Actor getNewNewGameBtnActor() {
         TextureRegion tex1 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("BtnNewGame");
         TextureRegion tex2 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("BtnNewGameAct");
@@ -318,6 +322,7 @@ public class HomeStage extends BaseStage {
     /**
      * Creates the resume game button actor and adds it to the stage
      */
+    @NotNull
     private Button getNewResumeGameBtnActor() {
         TextureRegion tex1 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("BtnResumeGame");
         TextureRegion tex2 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("BtnResumeGameAct");
@@ -342,6 +347,7 @@ public class HomeStage extends BaseStage {
         return btn;
     }
 
+    @NotNull
     private Actor getNewAppVersionActor(){
 
         String appInfoString = hoatuTahi.getPlatformService().getBuildConfigBuildType().toUpperCase() + "  V" +
@@ -354,12 +360,13 @@ public class HomeStage extends BaseStage {
         labelStyle.fontColor = Color.BLACK;
         Label label = new Label(appInfoString,labelStyle);
 
-        label.setX(hoatuTahi.getScreenWidth() - label.getWidth() - 10);
-        label.setY(hoatuTahi.getScreenHeight() - label.getHeight() - 5);
+        label.setX(HoatuTahi.VIRT_SCREEN_WIDTH - label.getWidth() - 10);
+        label.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - label.getHeight() - 5);
 
         return label;
     }
 
+    @NotNull
     private LevelSelectorActor getNewLevelSelectorActor(){
 
         int selectedLevel = hoatuTahi.getGameFactory().getGameLevel();
@@ -369,22 +376,20 @@ public class HomeStage extends BaseStage {
 
         LevelSelectorActor act = new LevelSelectorActor(selectedLevel, itemSetContainer, assetManager);
 
-        act.addSelectionChangedListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
-                    int selectedLevel = (Integer) propertyChangeEvent.getNewValue();
-                    hoatuTahi.getGameFactory().setGameLevel(selectedLevel);
-                    pgSizeSelectorActor.refreshVisibleGameLevel();
-                    updateResumeGameBtnEnabledState();
-                    updateHighScoreViewActor();
-                }
+        act.addSelectionChangedListener(propertyChangeEvent -> {
+            if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
+                int selectedLevel1 = (Integer) propertyChangeEvent.getNewValue();
+                hoatuTahi.getGameFactory().setGameLevel(selectedLevel1);
+                pgSizeSelectorActor.refreshVisibleGameLevel();
+                updateResumeGameBtnEnabledState();
+                updateHighScoreViewActor();
             }
         });
 
         return act;
     }
 
+    @NotNull
     private ScoreViewActor getNewScoreViewActor() {
         ScoreViewActor actor = new ScoreViewActor(assetManager);
         actor.setScale(0.7f);
@@ -398,6 +403,7 @@ public class HomeStage extends BaseStage {
     }
 
 
+    @NotNull
     private Actor getNewHighScoreLabelActor(){
         float scale = 1.2f;
         Image img = new Image(assetManager.getTex(MyAssetManager.HIGH_SCORE_LABEL_TEX));

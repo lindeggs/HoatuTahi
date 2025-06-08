@@ -4,13 +4,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import org.jetbrains.annotations.NotNull;
+
 import ch.linst.hoatutahi.HoatuTahi;
 
 public class SplashStage extends Stage {
 
-    private HoatuTahi hoatuTahi;
+    private final HoatuTahi hoatuTahi;
 
-    public SplashStage(Viewport viewport, HoatuTahi hoatuTahiArg) {
+    public SplashStage(@NotNull Viewport viewport, @NotNull HoatuTahi hoatuTahiArg) {
         super(viewport);
         hoatuTahi = hoatuTahiArg;
         hoatuTahi.getAssetManager().loadAllOpenGlAssets();

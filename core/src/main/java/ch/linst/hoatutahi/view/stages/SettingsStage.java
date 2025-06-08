@@ -8,8 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.ItemSetContainer;
@@ -19,7 +18,7 @@ import ch.linst.hoatutahi.view.actors.radioButtonSelectors.ItemSetSelectorActor;
 
 public class SettingsStage extends BaseStage {
 
-    public SettingsStage(Viewport viewportArg, HoatuTahi hoatuTahiArg) {
+    public SettingsStage(@NotNull Viewport viewportArg, @NotNull HoatuTahi hoatuTahiArg) {
         super(viewportArg, hoatuTahiArg);
 
         ItemSetSelectorActor itemSetSelectorActor = getNewItemSetSelectorActor();
@@ -33,12 +32,13 @@ public class SettingsStage extends BaseStage {
 
     }
 
+    @NotNull
     private Actor getNewExitBtnActor() {
         TextureRegionDrawable trd1 = new TextureRegionDrawable(assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("Exit"));
         TextureRegionDrawable trd2 = new TextureRegionDrawable(assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("ExitActive"));
         Button btn = new Button(trd1, trd2);
 
-        btn.setPosition(40f, hoatuTahi.getScreenHeight() - btn.getHeight() - 20f);
+        btn.setPosition(40f, HoatuTahi.VIRT_SCREEN_HEIGHT - btn.getHeight() - 20f);
 
         btn.addListener(new ClickListener()
         {
@@ -52,6 +52,7 @@ public class SettingsStage extends BaseStage {
     }
 
 
+    @NotNull
     private Actor getNewItemSetPresentationActor(int itemSetIndex, ItemSetSelectorActor itemSetSelectorActorArg){
         int highestVisibleItem = hoatuTahi.getGameFactory().getHighestItemUnveiled(itemSetIndex);
         String actName = MyAssetManager.ITEM_SET_ATLAS[itemSetIndex];
@@ -70,25 +71,23 @@ public class SettingsStage extends BaseStage {
     private void setVisibleItemSetActor(int itemSetIndex){
         for(int i = 0; i < MyAssetManager.ITEM_SET_COUNT; i++){
             Actor act = getRoot().findActor(MyAssetManager.ITEM_SET_ATLAS[i]);
-            ((ItemSetPresentationActor)act).showItems((itemSetIndex == i)? true: false);
+            ((ItemSetPresentationActor)act).showItems(itemSetIndex == i);
         }
     }
 
+    @NotNull
     private ItemSetSelectorActor getNewItemSetSelectorActor(){
         int selectedItemSet = hoatuTahi.getGameViewFactory().getItemSetSelected();
 
         ItemSetSelectorActor act = new ItemSetSelectorActor(selectedItemSet, assetManager);
-        act.setPosition(0, hoatuTahi.getScreenHeight() - act.getHeight() - 20f);
+        act.setPosition(0, HoatuTahi.VIRT_SCREEN_HEIGHT - act.getHeight() - 20f);
 
         // Register handler which is called if the itemSet selection as changed
-        act.addSelectionChangedListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
-                    int selectedItemSet = (Integer) propertyChangeEvent.getNewValue();
-                    setVisibleItemSetActor(selectedItemSet);
-                    hoatuTahi.getGameViewFactory().setItemSetSelected(selectedItemSet);
-                }
+        act.addSelectionChangedListener(propertyChangeEvent -> {
+            if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
+                int selectedItemSet1 = (Integer) propertyChangeEvent.getNewValue();
+                setVisibleItemSetActor(selectedItemSet1);
+                hoatuTahi.getGameViewFactory().setItemSetSelected(selectedItemSet1);
             }
         });
 

@@ -16,6 +16,7 @@ public class Point2DRotation {
      * Constructor (private)
      * This constructor is needed for JSON deserialization
      */
+    @SuppressWarnings("unused")
     private Point2DRotation() {
     }
 
@@ -31,8 +32,8 @@ public class Point2DRotation {
 
     /**
      * Sets the X and the Y position attribute
-     * @param xPosArg
-     * @param yPosArg
+     * @param xPosArg X position
+     * @param yPosArg Y position
      */
     public void setPoint2D(int xPosArg, int yPosArg){
         xPos = xPosArg;
@@ -95,7 +96,7 @@ public class Point2DRotation {
 
     /**
      * Sets the direction to rotate to
-     * @param direction
+     * @param direction Direction to rotate (up, down, left or right)
      */
     public void setDirection(Direction direction) {
         this.direction = direction;
@@ -103,7 +104,7 @@ public class Point2DRotation {
 
     /**
      * Sets the size of the 2D array in X direction
-     * @param xSize
+     * @param xSize Size in X direction
      */
     public void setxSize(int xSize) {
         this.xSize = xSize;
@@ -111,7 +112,7 @@ public class Point2DRotation {
 
     /**
      * Sets the size of the 2D array in Y direction
-     * @param ySize
+     * @param ySize Size in Y direction
      */
     public void setySize(int ySize) {
         this.ySize = ySize;

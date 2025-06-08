@@ -3,7 +3,6 @@ package ch.linst.hoatutahi.view.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.utils.Scaling;
 
 import java.util.ArrayList;
 
-
 import ch.linst.hoatutahi.components.ItemSetContainer;
 import ch.linst.hoatutahi.components.MyAssetManager;
 import ch.linst.hoatutahi.components.playgroundModel.Playground;
@@ -23,24 +21,21 @@ import ch.linst.hoatutahi.components.playgroundModel.PlaygroundItem;
 
 public class PlaygroundActor extends Group {
 
-    Playground playground;
-    int gameLevel;
+    private Playground playground;
+    private final int gameLevel;
 
-    private MyAssetManager assetManager;
-    private ItemSetContainer itemSetContainer;
+    private final MyAssetManager assetManager;
+    private final ItemSetContainer itemSetContainer;
 
-    private ArrayList<TextureRegionDrawable> itemTexDrawables;
+    private final ArrayList<TextureRegionDrawable> itemTexDrawables;
 
-    private Image backgroundImages[][];
-    private Image itemImages[][];
-    private Image nextItemImage;
+    private final Image[][] backgroundImages;
+    private final Image[][] itemImages;
+    private final Image nextItemImage;
 
-    private ParticleEffectActor nextItemEffect;
+    private final ParticleEffectActor nextItemEffect;
 
-    private boolean backgroundImagesInitialized = false;
-
-    private Vector2 vector_getImgViewPosXY = new Vector2();
-
+    private final Vector2 vector_getImgViewPosXY = new Vector2();
 
     public PlaygroundActor(Playground playgroundArg, ItemSetContainer itemSetContainerArg, int gameLevelArg, MyAssetManager assetManagerArg) {
         super();
@@ -68,7 +63,7 @@ public class PlaygroundActor extends Group {
 
         // Default the size and aspect ratio of the actor
         // (the size can be overwritten any time later on)
-        setSize(400, 400 / playgroundArg.getSizeX() * playgroundArg.getSizeY());
+        setSize(400f, 400f / playgroundArg.getSizeX() * playgroundArg.getSizeY());
     }
 
 
@@ -83,15 +78,6 @@ public class PlaygroundActor extends Group {
      * Update itemImages means: Update visibility, texture, size and position
      */
     public void updateGroup(float sliderDeflection, boolean showNextNewPgItem){
-
-        // Init the background images (this is required only once)
-        /*
-        if(!backgroundImagesInitialized){
-            initBackgroundImages();
-            backgroundImagesInitialized = true;
-        }
-        */
-
         updateCurrentPlaygroundItems(sliderDeflection);
         updateNextItemImage(showNextNewPgItem);
         updateNextItemEffect(showNextNewPgItem);
@@ -126,10 +112,10 @@ public class PlaygroundActor extends Group {
     }
 
     private void updateCurrentPlaygroundItems(float sliderDeflection) {
-        PlaygroundItem pgModelItem[][] = playground.getCurrentItems();
-        for(int y = 0; y < pgModelItem.length; y++){
-            for(int x = 0; x < pgModelItem[y].length; x++){
-                    PlaygroundItem item = pgModelItem[y][x];
+        PlaygroundItem[][] pgModelItems = playground.getCurrentItems();
+        for(int y = 0; y < pgModelItems.length; y++){
+            for(int x = 0; x < pgModelItems[y].length; x++){
+                    PlaygroundItem item = pgModelItems[y][x];
                     Image itemView = itemImages[y][x];
 
                 // Update Item images
@@ -184,7 +170,7 @@ public class PlaygroundActor extends Group {
      * This operation must be called after the PlaygroundActor size has been set
      */
     private void initBackgroundImages(){
-        PlaygroundItem pgModelItem[][] = playground.getCurrentItems();
+        PlaygroundItem[][] pgModelItem = playground.getCurrentItems();
         for(int y = 0; y < pgModelItem.length; y++){
             for(int x = 0; x < pgModelItem[y].length; x++){
                 // Initialize background images (is needed only once)
@@ -204,9 +190,9 @@ public class PlaygroundActor extends Group {
     private void initAllItemsSize(){
         float itemScale = itemSetContainer.playgroundBaseScale * getWidth() / playground.getSizeX() / 180;
 
-        for(int y = 0; y < itemImages.length; y++){
-            for(int x = 0; x < itemImages[y].length; x++){
-                itemImages[y][x].setScale(itemScale);
+        for (Image[] itemImageRows : itemImages) {
+            for (Image itemImage : itemImageRows) {
+                itemImage.setScale(itemScale);
             }
         }
         nextItemImage.setScale(itemScale);
@@ -234,7 +220,7 @@ public class PlaygroundActor extends Group {
 
     private ArrayList<TextureRegionDrawable> getNewItemTexDrawables(){
 
-        ArrayList<TextureRegionDrawable> texDrawables = new ArrayList<TextureRegionDrawable>();
+        ArrayList<TextureRegionDrawable> texDrawables = new ArrayList<>();
         for(int i = 1; i <= 16; i++){
             texDrawables.add(new TextureRegionDrawable(itemSetContainer.itemTexAtlas.findRegion("Item", i)));
         }
@@ -252,9 +238,7 @@ public class PlaygroundActor extends Group {
 
 
     private Image[][] getNewItemImages(){
-
-        Image images[][] = new Image[playground.getSizeY()][playground.getSizeX()];
-
+        Image[][] images = new Image[playground.getSizeY()][playground.getSizeX()];
         for(int y = 0; y < images.length; y++){
             for(int x = 0; x < images[y].length; x++){
                 images[y][x] = new Image();
@@ -262,15 +246,12 @@ public class PlaygroundActor extends Group {
                 images[y][x].setVisible(false);
             }
         }
-
         return images;
     }
 
 
     private Image[][] getNewBackgroundImages() {
-
-        Image images[][] = new Image[playground.getSizeY()][playground.getSizeX()];
-
+        Image[][] images = new Image[playground.getSizeY()][playground.getSizeX()];
         for(int y = 0; y < images.length; y++){
             for(int x = 0; x < images[y].length; x++){
                 images[y][x] = new Image(assetManager.getTex(MyAssetManager.PG_TILE_TEX));
@@ -280,10 +261,10 @@ public class PlaygroundActor extends Group {
         return images;
     }
 
-    private void addActor2dArray(Actor actors[][]){
-        for(int y = 0; y < actors.length; y++){
-            for(int x = 0; x < actors[y].length; x++){
-                addActor(actors[y][x]);
+    private void addActor2dArray(Actor[][] actors){
+        for (Actor[] actorRow : actors) {
+            for (Actor actor : actorRow) {
+                addActor(actor);
             }
         }
     }

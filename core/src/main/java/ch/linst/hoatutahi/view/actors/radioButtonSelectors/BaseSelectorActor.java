@@ -10,8 +10,8 @@ import ch.linst.hoatutahi.components.singleSelectionSupport.SingleSelectionHandl
 
 public abstract class BaseSelectorActor extends HorizontalGroup {
 
-    protected MyAssetManager assetManager;
-    protected SingleSelectionHandler singleSelectionHandler = new SingleSelectionHandler();
+    protected final MyAssetManager assetManager;
+    protected final SingleSelectionHandler singleSelectionHandler = new SingleSelectionHandler();
 
     protected BaseSelectorActor(MyAssetManager assetManagerArg, float widthArg, float heightArg, float hSpace) {
         this.assetManager = assetManagerArg;

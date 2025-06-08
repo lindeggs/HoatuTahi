@@ -1,6 +1,5 @@
 package ch.linst.hoatutahi.view.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -13,24 +12,16 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.ItemSetContainer;
 import ch.linst.hoatutahi.view.actions.EndlessSpringMoveToAction;
 
 public class ItemSetPresentationActor extends Group {
 
-    private static final float SET_WIDTH  = 1000f;
-    private static final float SET_HEIGHT = 600f;
-    private static final float ITEM_PADDING = 20;
-
-    private Array<TextureAtlas.AtlasRegion> items;
-    private Array<TextureAtlas.AtlasRegion> hiddenItems;
-
-    private ArrayList<Image> itemImages;
-
-    private Vector2 itemsStartPos;
-
-    private Random rand = new Random();
+    private final Array<TextureAtlas.AtlasRegion> items;
+    private final Array<TextureAtlas.AtlasRegion> hiddenItems;
+    private final ArrayList<Image> itemImages;
+    private final Vector2 itemsStartPos;
+    private final Random rand = new Random();
 
     // This actor is intended to use up the whole screen space
     public ItemSetPresentationActor(ItemSetContainer itemSetContainerArg, int highestVisibleItemArg, Vector2 screenSizeArg, Vector2 itemsStartPosArg) {
@@ -60,8 +51,7 @@ public class ItemSetPresentationActor extends Group {
                 Action act = img.getActions().first();
                 if(act instanceof EndlessSpringMoveToAction){
                     EndlessSpringMoveToAction springACtion = (EndlessSpringMoveToAction)act;
-                    float xPos = 0;
-                    float yPos = 0;
+                    float xPos, yPos;
                     if(doShow){
                         float space = (getWidth() - 2 * sideMargin) / 3;
                         xPos = sideMargin + col * space;

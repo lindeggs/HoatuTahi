@@ -52,24 +52,24 @@ public class SlidePadActor extends Group implements EventListener {
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-    private MyAssetManager assetManager;
+    private final MyAssetManager assetManager;
 
-    private Image sliderImg;
-    private Image backgroundImg;
+    private final Image sliderImg;
+    private final Image backgroundImg;
 
     private SpaSlideDirection spaSlideDirection = SpaSlideDirection.UNKNOWN;
     private SpaState spaState = SpaState.READY;
 
-    private Vector2 initialPos = new Vector2(); // The initial pos of the touch down event
-    private Vector2 farestPos = new Vector2();
+    private final Vector2 initialPos = new Vector2(); // The initial pos of the touch down event
+    private final Vector2 farestPos = new Vector2();
 
     private float sliderDeflection = 0f;
 
     private long initialTime = 0; // The initial time of the touch down event
 
-    private AlphaAction bkgImgAlphaAction = new AlphaAction();
-    private AlphaAction sliderImgAlphaAction = new AlphaAction();
-    private FloatAction finishSlideAction = new FloatAction();
+    private final AlphaAction bkgImgAlphaAction = new AlphaAction();
+    private final AlphaAction sliderImgAlphaAction = new AlphaAction();
+    private final FloatAction finishSlideAction = new FloatAction();
 
     public SlidePadActor(MyAssetManager assetManagerArg) {
         assetManager = assetManagerArg;
@@ -253,7 +253,7 @@ public class SlidePadActor extends Group implements EventListener {
         setSliderDeflection(1f - (1f / (initialPos.y - farestPos.y) * (y - farestPos.y)));
     }
 
-    private void onTouchUp(float x, float y){
+    private void onTouchUp(@SuppressWarnings("unused") float x, @SuppressWarnings("unused") float y){
         sliderImg.setVisible(false);
         backgroundImg.setVisible(false);
 

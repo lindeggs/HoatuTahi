@@ -9,7 +9,7 @@ import ch.linst.hoatutahi.components.PlatformService;
 
 public class AndroidPlatformService implements PlatformService {
 
-    private Context context;
+    private final Context context;
 
     public AndroidPlatformService(Context contextArg) {
         context = contextArg;
@@ -26,6 +26,7 @@ public class AndroidPlatformService implements PlatformService {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             appVersion = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
 

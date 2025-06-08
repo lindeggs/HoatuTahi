@@ -26,22 +26,22 @@ public abstract class SelectorActor extends Group {
 
     public static final String SELECTION_CHANGED_EV_ID = "SelectionChanged";
 
-    protected MyAssetManager assetManager;
+    protected final MyAssetManager assetManager;
 
     private static final int SELECTOR_WIDTH  = HoatuTahi.VIRT_SCREEN_WIDTH - 200;
     private static final int SELECTOR_HEIGHT = 400;
 
-    private static final float LEFT_OUTSIDE_POS  = - 10 - ((HoatuTahi.VIRT_SCREEN_WIDTH - SELECTOR_WIDTH) / 2);
-    private static final float RIGHT_OUTSIDE_POS = 10 + HoatuTahi.VIRT_SCREEN_WIDTH - ((HoatuTahi.VIRT_SCREEN_WIDTH - SELECTOR_WIDTH) / 2);
+    private static final float LEFT_OUTSIDE_POS  = - 10 - ((float)(HoatuTahi.VIRT_SCREEN_WIDTH - SELECTOR_WIDTH) / 2);
+    private static final float RIGHT_OUTSIDE_POS = 10 + HoatuTahi.VIRT_SCREEN_WIDTH - ((float)(HoatuTahi.VIRT_SCREEN_WIDTH - SELECTOR_WIDTH) / 2);
 
     private static final float SWITCH_DURATION = 0.15f;
 
     private static final String BTN_LEFT_NAME  = "btnLeft";
     private static final String BTN_RIGHT_NAME = "btnRight";
 
-    private PropertyChangeSupport pcs;
+    private final PropertyChangeSupport pcs;
 
-    private ArrayList<Actor> selectorItems = new ArrayList<>();
+    private final ArrayList<Actor> selectorItems = new ArrayList<>();
     private Integer selectedIndex = 0;
 
     protected SelectorActor(MyAssetManager assetManagerArg) {
@@ -100,12 +100,8 @@ public abstract class SelectorActor extends Group {
     }
 
     private void setButtonVisibility(){
-        this.findActor(BTN_LEFT_NAME).setVisible(
-                (selectedIndex > 0) ? true : false
-        );
-        this.findActor(BTN_RIGHT_NAME).setVisible(
-                (selectedIndex < (selectorItems.size() - 1)) ? true : false
-        );
+        this.findActor(BTN_LEFT_NAME).setVisible(selectedIndex > 0);
+        this.findActor(BTN_RIGHT_NAME).setVisible(selectedIndex < (selectorItems.size() - 1));
     }
 
     private void goToNextIndex(){

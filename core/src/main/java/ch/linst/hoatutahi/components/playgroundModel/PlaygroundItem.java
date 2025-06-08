@@ -14,6 +14,7 @@ public final class PlaygroundItem {
      * Constructor
      * This constructor is needed for JSON deserialization
      */
+    @SuppressWarnings("unused")
     private PlaygroundItem(){
     }
 

@@ -16,9 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
 
 import ch.linst.hoatutahi.HoatuTahi;
 import ch.linst.hoatutahi.components.MyAssetManager;
@@ -33,15 +31,15 @@ import ch.linst.hoatutahi.view.actors.SlidePadActor;
 public class GameStage extends BaseStage {
 
     private Playground playground;
-    private PlaygroundActor playgroundActor;
-    private ScoreViewActor scoreViewActor;
-    private ScoreViewActor highScoreViewActor;
-    private GlassGlobeActor glassGlobeActor;
-    private SlidePadActor slidePadActor;
-    private Actor newGameBtnActor;
-    private Actor gameOverActor;
+    private final PlaygroundActor playgroundActor;
+    private final ScoreViewActor scoreViewActor;
+    private final ScoreViewActor highScoreViewActor;
+    private final GlassGlobeActor glassGlobeActor;
+    private final SlidePadActor slidePadActor;
+    private final Actor newGameBtnActor;
+    private final Actor gameOverActor;
 
-    public GameStage(Viewport viewportArg, HoatuTahi hoatuTahi, Playground playgroundArg){
+    public GameStage(@NotNull Viewport viewportArg, @NotNull HoatuTahi hoatuTahi, @NotNull Playground playgroundArg){
         super(viewportArg, hoatuTahi);
 
         hoatuTahi.getAudioProvider().playMusic(AudioProvider.Song.GameStageMusic);
@@ -95,23 +93,20 @@ public class GameStage extends BaseStage {
      */
     private void setupPlayground() {
         playground.removeAllPropertyChangeListeners(); // This is required to not double register the listener to an existing playground
-        playground.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if(propertyChangeEvent.getPropertyName().equals(Playground.STATE_CHANGED_EV_ID)){
-                    if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Playground.State)){
-                        Playground.State newState = (Playground.State)propertyChangeEvent.getNewValue();
-                        //Gdx.app.log("debug", "New state = " + newState.toString());
-                        if (newState == Playground.State.GAME_OVER){
-                            onGameOver();
-                        }
+        playground.addPropertyChangeListener(propertyChangeEvent -> {
+            if(propertyChangeEvent.getPropertyName().equals(Playground.STATE_CHANGED_EV_ID)){
+                if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Playground.State)){
+                    Playground.State newState = (Playground.State)propertyChangeEvent.getNewValue();
+                    //Gdx.app.log("debug", "New state = " + newState.toString());
+                    if (newState == Playground.State.GAME_OVER){
+                        onGameOver();
                     }
                 }
-                else if(propertyChangeEvent.getPropertyName().equals(Playground.SCORE_CHANGED_EV_ID)){
-                    if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
-                        scoreViewActor.setTargetScore((Integer)propertyChangeEvent.getNewValue());
-                        highScoreViewActor.setTargetScore(playground.getHighScore());
-                    }
+            }
+            else if(propertyChangeEvent.getPropertyName().equals(Playground.SCORE_CHANGED_EV_ID)){
+                if((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof Integer)){
+                    scoreViewActor.setTargetScore((Integer)propertyChangeEvent.getNewValue());
+                    highScoreViewActor.setTargetScore(playground.getHighScore());
                 }
             }
         });
@@ -136,8 +131,8 @@ public class GameStage extends BaseStage {
 
     private ScoreViewActor getNewScoreViewActor() {
         ScoreViewActor actor = new ScoreViewActor(assetManager, hoatuTahi.getAudioProvider());
-        actor.setPosition((hoatuTahi.getScreenWidth() - actor.getWidth()) / 2 - 100,
-                hoatuTahi.getScreenHeight() - actor.getHeight() - 40);
+        actor.setPosition((HoatuTahi.VIRT_SCREEN_WIDTH - actor.getWidth()) / 2 - 100,
+                HoatuTahi.VIRT_SCREEN_HEIGHT - actor.getHeight() - 40);
         return  actor;
     }
 
@@ -146,7 +141,7 @@ public class GameStage extends BaseStage {
         float scale = 0.5f;
         actor.setScale(scale);
         actor.setX(playgroundActor.getX() + playgroundActor.getWidth()  - actor.getWidth() - 20);
-        actor.setY(hoatuTahi.getScreenHeight() - actor.getHeight() - 120);
+        actor.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - actor.getHeight() - 120);
         return  actor;
     }
 
@@ -163,7 +158,7 @@ public class GameStage extends BaseStage {
 
         GlassGlobeActor actor = hoatuTahi.getGameViewFactory().getGlassGlobeActor(playground, gameLevel);
         actor.setScale(scale);
-        actor.setX(hoatuTahi.getScreenWidth() * 0.95f - actor.getWidth() * scale);
+        actor.setX(HoatuTahi.VIRT_SCREEN_WIDTH * 0.95f - actor.getWidth() * scale);
         actor.setY(playgroundActor.getY() - actor.getHeight() * scale - 30);
         if(gameLevel <= 1){
             actor.switchOn();
@@ -180,10 +175,10 @@ public class GameStage extends BaseStage {
         int gameLevel = hoatuTahi.getGameFactory().getGameLevel();
         PlaygroundActor actor = hoatuTahi.getGameViewFactory().getPlaygroundActor(playground, gameLevel);
 
-        actor.setWidth(hoatuTahi.getScreenWidth() * 0.98f);
+        actor.setWidth(HoatuTahi.VIRT_SCREEN_WIDTH * 0.98f);
         actor.setHeight(actor.getWidth() / playground.getSizeX() * playground.getSizeY());
-        actor.setX((hoatuTahi.getScreenWidth() - actor.getWidth()) / 2);
-        actor.setY(hoatuTahi.getScreenHeight() - actor.getHeight() - 250);
+        actor.setX((HoatuTahi.VIRT_SCREEN_WIDTH - actor.getWidth()) / 2);
+        actor.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - actor.getHeight() - 250);
         actor.setOrigin(actor.getWidth() / 2f, actor.getHeight() / 2f);
         //actor.setScale(0.9f);
         actor.updateGroup();
@@ -193,24 +188,20 @@ public class GameStage extends BaseStage {
 
     private SlidePadActor getNewSlidePadActor(){
         final SlidePadActor slidePadActor = new SlidePadActor(assetManager);
-        slidePadActor.setWidth(hoatuTahi.getScreenWidth());
-        slidePadActor.setHeight(hoatuTahi.getScreenHeight());
+        slidePadActor.setWidth(HoatuTahi.VIRT_SCREEN_WIDTH);
+        slidePadActor.setHeight(HoatuTahi.VIRT_SCREEN_HEIGHT);
         slidePadActor.setX(0f);
         slidePadActor.setY(0f);
 
-        slidePadActor.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                // Check if the "OldValue" exists and if it is an SpaEvent
-                if(((propertyChangeEvent.getOldValue() != null) && (propertyChangeEvent.getOldValue() instanceof SlidePadActor.SpaEvent)) &&
-                        ((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof SlidePadActor.SpaSlideDirection))){
-                    SlidePadActor.SpaEvent spaEvent = (SlidePadActor.SpaEvent)propertyChangeEvent.getOldValue();
-                    SlidePadActor.SpaSlideDirection spaState = (SlidePadActor.SpaSlideDirection)propertyChangeEvent.getNewValue();
-                    onSlidePadActorPropertyChange(spaEvent, spaState);
-                    //System.out.println("spaEvent: " + spaEvent.toString() + "    spaState: " + spaState.toString());
-                }
+        slidePadActor.addPropertyChangeListener(propertyChangeEvent -> {
+            // Check if the "OldValue" exists and if it is an SpaEvent
+            if(((propertyChangeEvent.getOldValue() != null) && (propertyChangeEvent.getOldValue() instanceof SlidePadActor.SpaEvent)) &&
+                    ((propertyChangeEvent.getNewValue() != null) && (propertyChangeEvent.getNewValue() instanceof SlidePadActor.SpaSlideDirection))){
+                SlidePadActor.SpaEvent spaEvent = (SlidePadActor.SpaEvent)propertyChangeEvent.getOldValue();
+                SlidePadActor.SpaSlideDirection spaState = (SlidePadActor.SpaSlideDirection)propertyChangeEvent.getNewValue();
+                onSlidePadActorPropertyChange(spaEvent, spaState);
+                //System.out.println("spaEvent: " + spaEvent.toString() + "    spaState: " + spaState.toString());
             }
-
         });
         return slidePadActor;
     }
@@ -219,10 +210,7 @@ public class GameStage extends BaseStage {
 
         int gameLevel = hoatuTahi.getGameFactory().getGameLevel();
 
-        if(spaEvent == SlidePadActor.SpaEvent.DEFLECTION_CHANGED){
-            //System.out.println("Deflection: " + slidePadActor.getSliderDeflection());
-        }
-        else if(spaEvent == SlidePadActor.SpaEvent.DIRECTION_THRESHOLD_EXCEEDED){
+        if(spaEvent == SlidePadActor.SpaEvent.DIRECTION_THRESHOLD_EXCEEDED){
             switch (spaState){
                 case SLIDE_RIGHT:
                     playground.event(Playground.Event.MOVE_RIGHT);
@@ -273,7 +261,7 @@ public class GameStage extends BaseStage {
         TextureRegion tex2 = assetManager.getAtlas(MyAssetManager.BUTTON_ATLAS).findRegion("BtnNewGameAct");
 
         final MyButton btn = new MyButton(tex1, tex2, null, null);
-        btn.setX((hoatuTahi.getScreenWidth() - btn.getWidth())/2);
+        btn.setX((HoatuTahi.VIRT_SCREEN_WIDTH - btn.getWidth())/2);
         btn.setY(300);
         btn.setVisible(false);
 
@@ -317,7 +305,7 @@ public class GameStage extends BaseStage {
         Button backBtn = new Button(trd1, trd2);
 
         backBtn.setX(playgroundActor.getX());
-        backBtn.setY(hoatuTahi.getScreenHeight() - backBtn.getHeight() - 30);
+        backBtn.setY(HoatuTahi.VIRT_SCREEN_HEIGHT - backBtn.getHeight() - 30);
 
         backBtn.addListener(new ClickListener()
         {
@@ -345,7 +333,7 @@ public class GameStage extends BaseStage {
         img.setWidth(HoatuTahi.VIRT_SCREEN_WIDTH * 0.9f);
         img.setHeight(img.getWidth() * aspectRatio);
 
-        img.setX((hoatuTahi.getScreenWidth() / 2) - (img.getWidth() / 2));
+        img.setX(((float)HoatuTahi.VIRT_SCREEN_WIDTH / 2) - (img.getWidth() / 2));
         img.setY(playgroundActor.getY() + (playgroundActor.getHeight() / 2) - (img.getHeight() / 2) - (moveAmountY / 2));
 
         img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);

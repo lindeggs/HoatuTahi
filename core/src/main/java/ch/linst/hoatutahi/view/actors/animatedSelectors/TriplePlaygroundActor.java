@@ -1,6 +1,5 @@
 package ch.linst.hoatutahi.view.actors.animatedSelectors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -12,7 +11,7 @@ import ch.linst.hoatutahi.view.actors.PlaygroundActor;
  */
 public class TriplePlaygroundActor extends Group {
 
-    Actor pgActors[] = new PlaygroundActor[3];
+    private final Actor[] pgActors = new PlaygroundActor[3];
 
     public TriplePlaygroundActor(PlaygroundActor pgActorLvl0, PlaygroundActor pgActorLvl1, PlaygroundActor pgActorLvl2, int showLvl) {
 

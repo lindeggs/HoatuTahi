@@ -61,35 +61,22 @@ public class AudioProvider implements PropertyChangeListener{
         audioPSettings = audioProviderSettingsArg;
         homeStageMusic.setLooping(true);
 
-        final Music.OnCompletionListener gameStageAudioCompletionListener = new Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(Music music) {
-                gameStageMusicIndex = (gameStageMusicIndex + 1) % gameStageMusic.length;
+        final Music.OnCompletionListener gameStageAudioCompletionListener = music -> {
+            gameStageMusicIndex = (gameStageMusicIndex + 1) % gameStageMusic.length;
 
-                int delayTime = randomDelayGen.nextInt(maxDelayBetweenSongs - minDelayBetweenSongs) + minDelayBetweenSongs;
+            int delayTime = randomDelayGen.nextInt(maxDelayBetweenSongs - minDelayBetweenSongs) + minDelayBetweenSongs;
 
-                minDelayBetweenSongs = (int)((float)minDelayBetweenSongs * DELAY_INCREASE_FACTOR);
-                maxDelayBetweenSongs = (int)((float)maxDelayBetweenSongs * DELAY_INCREASE_FACTOR);
+            minDelayBetweenSongs = (int)((float)minDelayBetweenSongs * DELAY_INCREASE_FACTOR);
+            maxDelayBetweenSongs = (int)((float)maxDelayBetweenSongs * DELAY_INCREASE_FACTOR);
 
-                gameStageMusicScheduledFuture = gameStageMusicExecutorService.schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        doPlayMusic(gameStageMusic[gameStageMusicIndex]);
-                    }
-                }, delayTime, TimeUnit.SECONDS);
-            }
+            gameStageMusicScheduledFuture = gameStageMusicExecutorService.schedule(() -> doPlayMusic(gameStageMusic[gameStageMusicIndex]), delayTime, TimeUnit.SECONDS);
         };
 
         for (Music music:gameStageMusic){
             music.setOnCompletionListener(gameStageAudioCompletionListener);
         }
 
-        gameOverSpoken.setOnCompletionListener(new Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(Music music) {
-                doPlayMusic(gameOverMusic);
-            }
-        });
+        gameOverSpoken.setOnCompletionListener(music -> doPlayMusic(gameOverMusic));
     }
 
     public void playMusic(Song songArg){

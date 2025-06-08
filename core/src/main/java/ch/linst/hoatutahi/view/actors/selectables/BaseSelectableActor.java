@@ -1,11 +1,5 @@
 package ch.linst.hoatutahi.view.actors.selectables;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
 import ch.linst.hoatutahi.components.singleSelectionSupport.Selectable;
 import ch.linst.hoatutahi.components.singleSelectionSupport.SelectedListener;
 import ch.linst.hoatutahi.view.actors.buttons.MyClickableGroup;

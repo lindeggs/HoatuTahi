@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ParticleEffectActor extends Actor {
 
-    private ParticleEffect effect;
-    private Vector2 effectLastPos = new Vector2(0,0);
+    private final ParticleEffect effect;
+    private final Vector2 effectLastPos = new Vector2(0,0);
     private boolean restartAlways = true;
 
     public ParticleEffectActor(ParticleEffect particleEffectArg) {
@@ -42,10 +42,6 @@ public class ParticleEffectActor extends Actor {
 
     // Particle effect interface methods
 
-    public void reset(boolean resetScaling){
-        effect.reset(resetScaling);
-    }
-
     public void start() {
         effect.start();
         restartAlways = false;
@@ -67,6 +63,7 @@ public class ParticleEffectActor extends Actor {
     }
 
     public void setAlpha(float alpha){
+        //noinspection GDXJavaUnsafeIterator
         for(ParticleEmitter pEmi: effect.getEmitters()){
             pEmi.getTransparency().setHigh(alpha);
         }

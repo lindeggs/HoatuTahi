@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class ScoreDigitActor extends Image {
 
-    private ArrayList<TextureRegionDrawable> digitsTexDrawables;
+    private final ArrayList<TextureRegionDrawable> digitsTexDrawables;
 
     public ScoreDigitActor(ArrayList<TextureRegionDrawable> digitsTexDrawablesArg, float widthArg, float heightArg) {
         super(digitsTexDrawablesArg.get(10));

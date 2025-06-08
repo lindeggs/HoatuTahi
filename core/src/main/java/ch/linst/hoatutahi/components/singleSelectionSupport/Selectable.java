@@ -7,7 +7,7 @@ public interface Selectable {
 
     /**
      * Provides option to register an event listener of type ISelectedListener
-     * @param listener
+     * @param listener Event listener
      */
     void addSelectedListener(SelectedListener listener);
 
